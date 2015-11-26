@@ -13,6 +13,7 @@ namespace Byaltek.Azure
         private static string _azureAccountName = string.Empty;
         private static string _azureAccessKey = string.Empty;
         private static string _cdnPath = string.Empty;
+        private const string _defaultJsonConfigPath = "~/Config.json";
         private static string _secureCdnPath = string.Empty;
         private static int _cachePollTime = 0;
         private static int _bundleCacheTTL = 0;
@@ -247,7 +248,9 @@ namespace Byaltek.Azure
         }
 
         /// <summary>
-        /// Reads the settings from the Config.json file in the site root
+        /// Reads the settings from the Config.json file in the site root. You can override this file name or path
+        /// by setting the jsonConfig app setting to the path you would like. Be sure to configure the path from 
+        /// the application root by prefixing the path with ~.
         /// </summary>
         private static string jsonString
         {
@@ -264,8 +267,8 @@ namespace Byaltek.Azure
                 }
                 else
                 {
-                    if (File.Exists(HostingEnvironment.MapPath("~/Config.json")))
-                        using (StreamReader r = new StreamReader(HostingEnvironment.MapPath("~/Config.json")))
+                    if (File.Exists(HostingEnvironment.MapPath(_defaultJsonConfigPath)))
+                        using (StreamReader r = new StreamReader(HostingEnvironment.MapPath(_defaultJsonConfigPath)))
                         {
                             return r.ReadToEnd();
                         }
